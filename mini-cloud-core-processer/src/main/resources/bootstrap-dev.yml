@@ -1,0 +1,36 @@
+server:
+  port: 8700
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 500
+    max-connections: 10240
+    accept-count: 500
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        namespace: de7eb781-5e83-4bff-8c52-6f00f6a090d3
+        server-addr: ${NACOS_HOST:mini-cloud-resiger}:${NACOS_PORT:8848}
+        metadata:
+          version: wl
+      config:
+        namespace: de7eb781-5e83-4bff-8c52-6f00f6a090d3
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @profiles.active@
+
+rocketmq:
+  # rocketMQ的命名服务器，格式为: host:port;host:port
+  name-server: 127.0.0.1:9876
+  producer:
+    # 生产者的组名
+    group: group-test
+    # 发送消息超时时间 默认3秒
+    send-message-timeout: 3000
